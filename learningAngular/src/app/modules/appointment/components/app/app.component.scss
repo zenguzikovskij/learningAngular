@@ -1,7 +1,8 @@
-.link-holder {
+.link-holder{
     display: flex;
-    /* width: 100%; */
-    gap: 10rem;
-    margin-inline-start: 10rem;
-    margin-block-start: 1rem;
+    justify-content: space-around;
+    padding-block: 0.2rem;
+    box-shadow: 0px 3px #edebebfa;
+    background-color: #f5f5f5;
+    box-sizing: border-box;
 }
