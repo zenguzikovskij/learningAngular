@@ -1,1 +1,25 @@
-<p>user-page works!</p>
+<div class="contentContainer">
+    <div class="cards-header">
+        <h2>Users List</h2>
+        <button mat-raised-button (click)="toggleButton()">Sort Active</button>
+    </div>
+
+    <div class="cards-holder">
+        <ng-container *ngFor="let user of users">
+            <mat-card class="user-card"  *ngIf="!buttonState || (buttonState && user.isActive)">
+                <span *ngIf="!user.isActive" class="material-symbols-outlined red">bedtime</span>
+                <span *ngIf="user.isActive" class="material-symbols-outlined green">sunny</span>
+                <mat-card-title>
+                    {{ user.name }}
+                </mat-card-title>
+                <mat-card-content>
+                    Age: {{ user.age }}
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-stroked-button (click)="toggleUserStatus(user)">Change Status</button>
+                </mat-card-actions>
+            </mat-card>
+            <p class="hidden">Test</p>
+        </ng-container>
+    </div>
+</div>
