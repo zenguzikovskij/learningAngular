@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
-interface User {
-  name: String,
-  age: Number,
-  isActive: boolean
-}
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { UsersDataService } from '../../../appointment/services/users-data.service';
+import { User } from 'src/app/modules/shared/interfaces/user/user.interface';
+import { UserCardComponent } from '../user-card/user-card.component';
 
 @Component({
   selector: 'app-user-page',
@@ -12,38 +9,27 @@ interface User {
   styleUrls: ['./user-page.component.scss', '../../../../styles/styles.scss', ]
 })
 export class UserPageComponent implements OnInit {
-  users: User[] = [
-    { name: 'Joe', age: 23, isActive: true },
-    { name: 'Ann', age: 12, isActive: false },
-    { name: 'Michael', age: 45, isActive: false },
-    { name: 'Natan', age: 31, isActive: true },
-    { name: 'Hugho', age: 21, isActive: false },
-    { name: 'Joe', age: 23, isActive: true },
-    { name: 'Ann', age: 12, isActive: false },
-    { name: 'Michael', age: 45, isActive: false },
-    { name: 'Natan', age: 31, isActive: true },
-    { name: 'Hugho', age: 21, isActive: false },
-  ]
-
-
+  users: User[] = [];
   buttonState: Boolean = false;
+  @ViewChild(UserCardComponent) userComponent: UserCardComponent;
 
-  toggleButton() {
+  toggleButton(): void {
     this.buttonState = !this.buttonState;
     console.log('toggled');
-    
   }
 
-  toggleUserStatus(user: User) {
-    let userIndex = this.users.indexOf(user);
-    this.users[userIndex].isActive = !this.users[userIndex].isActive;
-    console.log(this.users);
-    
+  deactivateUsers(): void {
+    this.users
+      .filter(user => user.isActive === true)
+      .forEach(user => {
+        this.userComponent.toggleUserStatus(user);
+      });
   }
 
-  constructor() { }
+  constructor(private service: UsersDataService) {  }
 
   ngOnInit(): void {
+    this.users = this.service.getUsers();
   }
 
 }

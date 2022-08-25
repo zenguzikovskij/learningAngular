@@ -7,46 +7,13 @@
     align-items: center;
 }
 
-mat-card {
-    position: relative;
-    
-    & > mat-card-title {
-        padding-inline-start: 3rem;
-        padding-block-end: 0.3rem;
-    }
-}
-
-mat-card-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .cards-holder {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-
-    & > mat-card {
-        margin: 0.2rem;
-    }
+    gap: 1rem;
 }
 
-.material-symbols-outlined {
-    position: absolute;
-    font-weight: 600;
-    font-size: 1.4rem;
-    background-color: whitesmoke;
-    border-radius: 50%;
-    padding: 0.3rem;
-    left: 0.6rem;
-    top: 0.4rem;
-
-    &.red {
-        color: lightgrey;
-    }
-
-    &.green {
-        color: rgb(11 215 36);
-    }
+.hideInactive .inactive{
+    display: none;
 }
