@@ -22,7 +22,7 @@
     <ng-container ngProjectAs="user">
         <div>
             <p>Gender: 
-                <span>{{ user.gender }}</span>
+                <span>{{ !user.gender ? 'Male' : 'Female' }}</span>
             </p>
             <p>Department: 
                 <span>{{ user.department }}</span>
