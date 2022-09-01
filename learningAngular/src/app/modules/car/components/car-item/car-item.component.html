@@ -1,0 +1,34 @@
+<app-item-card 
+[usageType]="cardType" 
+[id]="car.id" 
+[imageUrl]="!car.imageUrl ? 'https://material.angular.io/assets/img/examples/shiba2.jpg' : car.imageUrl "
+(favouriteChange)="processFavourite($event)"
+[favourite]="favourite"
+>
+
+    <ng-container *ngIf="cardType !== 'small' " ngProjectAs="title">
+        <p>
+            {{ car.name }}
+            <span class="mat-card-title-year">(Year: {{ car.releaseYear }})</span>
+        </p>
+    </ng-container>
+
+    <ng-container *ngIf="cardType === 'small' " ngProjectAs="[title]">
+        <p>
+            {{ car.name }}
+            <span class="mat-card-title-year">(Year: {{ car.releaseYear }})</span>
+        </p>
+    </ng-container>
+    
+    <ng-container ngProjectAs="user">
+        <div>
+            <p>Color: 
+                <span>{{ car.color }}</span>
+            </p>
+            <p>Number: 
+                <span>{{ car.number }}</span>
+            </p>
+        </div> 
+    </ng-container>
+    
+</app-item-card>

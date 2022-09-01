@@ -1,0 +1,20 @@
+form {
+    display: flex;
+    justify-self: center;
+    gap: 1rem;
+    & .user-info,
+    & .user-work {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & button {
+        align-self: flex-end;
+        justify-self: flex-end;
+    }
+}
+
+.mat-radio-group {
+    display: flex;
+    justify-content: space-between;
+}

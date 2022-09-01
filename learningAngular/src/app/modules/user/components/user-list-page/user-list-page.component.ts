@@ -5,20 +5,22 @@ import { User } from '../../interfaces/user.interface';
 import { UsersDataService } from '../../services/users-data.service';
 
 @Component({
-  selector: 'app-user-page',
-  templateUrl: './user-page.component.html',
-  styleUrls: ['./user-page.component.scss', '../../../../styles/styles.scss', ]
+  selector: 'app-user-list-page',
+  templateUrl: './user-list-page.component.html',
+  styleUrls: ['./user-list-page.component.scss', '../../../../styles/styles.scss']
 })
-export class UserPageComponent implements OnInit {
+export class UserListPageComponent implements OnInit {
   users: User[];
   favouriteUsers: User[] = [];
 
-  constructor(private usersDataService: UsersDataService, private favouritesDataService: FavouritesService) {}
+  constructor(private usersDataService: UsersDataService, private favouritesDataService: FavouritesService) { }
 
   ngOnInit(): void {
     this.users = this.usersDataService.getUsers();
     this.fillFavourites();
   }
+
+  
 
   updateFavouriteList(id: number) {
     let result = this.favouritesDataService.toggleFavourite(FavouriteTypes.user, id);
@@ -34,4 +36,5 @@ export class UserPageComponent implements OnInit {
       userToAdd ? this.favouriteUsers.push(userToAdd) : '' ;
     });
   }
+
 }

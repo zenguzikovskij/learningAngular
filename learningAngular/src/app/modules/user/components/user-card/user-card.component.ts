@@ -1,16 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { User } from 'src/app/modules/shared/interfaces/user/user.interface';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { User } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss'],
+  styleUrls: ['./user-card.component.scss', '../../../../styles/styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserCardComponent implements OnInit {
-  numberOfTicks: number = 0;
-
   @Input() user: User;
+  @Input() cardType: string;
+  @Input() favourite: boolean | number;
+
+  @Output() favouriteChange = new EventEmitter <number> ();
+  
+  numberOfTicks: number = 0;
 
   constructor(private ref: ChangeDetectorRef) { 
 
@@ -23,10 +27,8 @@ export class UserCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleUserStatus(user: User): void {
-    console.log(this.numberOfTicks);
-    if(user.age >= 18) {
-      user.isActive = !user.isActive;
-    }
+  processFavourite(id: number): void {
+    this.favouriteChange.emit(id);
   }
+
 }

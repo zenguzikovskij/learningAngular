@@ -7,10 +7,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { CarListComponent } from './components/car-list/car-list.component';
+import { CarItemComponent } from './components/car-item/car-item.component';
+
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    CarPageComponent
+    CarPageComponent,
+    CarListComponent,
+    CarItemComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     MatIconModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    SharedModule
   ]
 })
 export class CarModule { }

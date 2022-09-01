@@ -1,0 +1,7 @@
+<div class="cards-holder">
+    <app-car-item 
+        [cardType]="cardType"  
+        *ngFor="let car of cars" [car]="car" 
+        [favourite]="favouriteList?.includes(car) || false" 
+        (favouriteChange)="furtherProcessFavourite($event)"></app-car-item>
+</div>

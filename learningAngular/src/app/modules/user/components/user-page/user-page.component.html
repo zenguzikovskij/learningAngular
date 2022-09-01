@@ -1,11 +1,1 @@
-<div class="contentContainer">
-    <div class="cards-header">
-        <h2>Users List</h2>
-        <button mat-raised-button (click)="toggleButton()">Sort Active</button>
-        <button mat-raised-button (click)="deactivateUsers()">Deactivate Users</button>
-    </div>
-
-    <div class="cards-holder" [ngClass]="{ 'hideInactive': buttonState }">
-        <app-user-card *ngFor="let user of users" [ngClass]= "{inactive: !user.isActive}" [user] = "user"></app-user-card>
-    </div>
-</div>
+<router-outlet></router-outlet>

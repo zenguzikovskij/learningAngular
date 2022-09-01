@@ -1,0 +1,38 @@
+<mat-card class="example-card">
+
+  <ng-container *ngIf="usageType === 'medium' ">
+    <mat-card-header>
+      <mat-card-title>
+
+       <ng-content select="title"></ng-content>
+
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image [src]="imageUrl" alt="Photo">
+    <mat-card-content>
+
+      <ng-content select="user"></ng-content>
+      <ng-content select="car"></ng-content>
+
+    </mat-card-content>
+    <mat-card-actions>
+
+      <button mat-stroked-button (click)="addToFavourites(id)">
+        <mat-icon aria-label="Add to Favourite" class="material-icons-outlined">{{ favourite ? 'favorite' : 'favorite_outlined' }}</mat-icon>
+      </button>
+      
+    </mat-card-actions>
+  </ng-container>
+
+  <ng-container *ngIf="usageType === 'small' ">
+    <mat-card-header>
+      <mat-card-title>
+
+       <ng-content select="*"></ng-content>
+
+      </mat-card-title>
+    </mat-card-header>
+    <img class="small-avatar" mat-card-image [src]="imageUrl" alt="Photo">
+  </ng-container>
+
+  </mat-card>

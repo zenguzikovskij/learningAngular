@@ -2,6 +2,15 @@
     display: none;
 }
 
+.cards-header {
+    display: flex;
+    justify-content: space-between;
+    margin-block-end: 1rem;
+    padding-block-end: 0.6rem;
+    border-block-end: 1px solid rgba(128, 128, 128, 0.555);
+    align-items: center;
+}
+
 .contentContainer {
     display: flex;
     justify-content: center;
@@ -11,4 +20,59 @@
     padding: 1rem 2rem;
     border-radius: 5px;
     box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+}
+
+.cards-holder {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cards-content {
+    display: flex;
+    gap: rem;
+    position: relative;
+    margin-inline-end: 2rem;
+    margin: 0 auto;
+}
+
+mat-card {
+    position: relative;
+    height: 6.5rem;
+    
+    & > mat-card-title {
+        padding-inline-start: 3rem;
+        padding-block-end: 0.3rem;
+    }
+}
+
+mat-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.material-symbols-outlined {
+    position: absolute;
+    font-weight: 600;
+    font-size: 1.4rem;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    padding: 0.3rem;
+    left: 0.6rem;
+    top: 0.4rem;
+
+    &.red {
+        color: lightgrey;
+    }
+
+    &.green {
+        color: rgb(11 215 36);
+    }
+}
+
+.mat-card-title-year {
+    color: grey;
+    font-size: 0.8rem;
 }
