@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CardTypes } from '../../enums/cardTemplate.types';
 
 @Component({
   selector: 'app-item-card',
@@ -6,15 +7,17 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./item-card.component.scss']
 })
 export class ItemCardComponent implements OnInit {
-  @Input() id: number;
   @Input() imageUrl?: string;
   @Input() favourite: boolean | number;
-  @Input() usageType?: string;
+  @Input() usageType?: CardTypes;
   @Output() favouriteChange = new EventEmitter <number> ();
+  
+  cardTypesEnum = CardTypes;
+  
 
   constructor() {}
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {}
 
   addToFavourites(id: number): void {
     this.favouriteChange.emit(id);

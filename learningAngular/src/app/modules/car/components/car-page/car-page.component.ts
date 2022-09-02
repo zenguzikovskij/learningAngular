@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CardTypes } from 'src/app/shared/enums/cardTemplate.types';
 import { FavouriteTypes } from 'src/app/shared/enums/favourite.types';
 import { FavouritesService } from 'src/app/shared/services/favourites.service';
 import { Car } from '../../interfaces/car.interface';
@@ -12,6 +13,8 @@ import { CarServiceService } from '../../service/car-service.service';
 export class CarPageComponent implements OnInit {
   cars: Car[];
   favouriteCars: Car[] = [];
+  cardTypesEnum = CardTypes;
+
 
   constructor(private carsDataService: CarServiceService, private favouritesDataService: FavouritesService) { }
 

@@ -21,7 +21,7 @@ export class UsersDataService {
     { id: 13, firstName: 'Joe', lastName: 'Joes', email: 'hloe@hloe.hloe', age: 73, gender: false, department: 'BI', company: 'CMP', imageUrl:      '' },
     { id: 14, firstName: 'Joe', lastName: 'Joes', email: 'hloe@hloe.hloe', age: 26, gender: true, department: 'sales', company: 'CMP', imageUrl:    '' },
     { id: 15, firstName: 'Joe', lastName: 'Joes', email: 'hloe@hloe.hloe', age: 94, gender: true, department: 'sales', company: 'CMP', imageUrl:    '' }
-  ]
+  ];
   
   constructor() { }
 
@@ -29,7 +29,7 @@ export class UsersDataService {
     return this.users;
   }
 
-  addUser(userObj: any) {
+  addUser(userObj: User) {
     userObj.id = this.users.length + 1;
     this.users.push(userObj);
   }

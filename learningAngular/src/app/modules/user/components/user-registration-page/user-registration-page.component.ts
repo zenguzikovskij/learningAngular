@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
 import { UsersDataService } from '../../services/users-data.service';
 
@@ -9,12 +10,13 @@ import { UsersDataService } from '../../services/users-data.service';
 })
 export class UserRegistrationPageComponent implements OnInit {
 
-  constructor( private userDataService: UsersDataService) {}
+  constructor( private userDataService: UsersDataService, private router: Router) {}
 
   ngOnInit(): void {
   }
 
   sendNewUser(newUserObj: User) {
     this.userDataService.addUser(newUserObj);
+    this.router.navigate(['users-list']);
   }
 }

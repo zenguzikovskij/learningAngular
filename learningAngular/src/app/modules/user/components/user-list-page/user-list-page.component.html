@@ -4,14 +4,14 @@
     </div>
     <div class="cards-content">
         <app-user-list 
-        [cardType]="'medium'" 
+        [cardType]="cardTypesEnum.medium" 
         [users]="users" 
         (favouriteChange)="updateFavouriteList($event)" 
         [favouriteList]="favouriteUsers">
     </app-user-list>
         <app-favourite-bar *ngIf="favouriteUsers.length > 0">
             <app-user-list 
-            [cardType]="'small'" 
+            [cardType]="cardTypesEnum.small" 
             ngProjectAs='item-list' 
             [users]="favouriteUsers">
         </app-user-list>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CardTypes } from 'src/app/shared/enums/cardTemplate.types';
 import { Car } from '../../interfaces/car.interface';
 
 @Component({
@@ -8,7 +9,7 @@ import { Car } from '../../interfaces/car.interface';
 })
 export class CarListComponent implements OnInit {
   @Input() cars: Car[];
-  @Input() cardType: string;
+  @Input() cardType: CardTypes;
   @Input() favourite: boolean | number;
   @Input() favouriteList?: Car[];
   @Output() favouriteChange = new EventEmitter <number> ();

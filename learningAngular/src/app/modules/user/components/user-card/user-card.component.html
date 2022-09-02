@@ -1,25 +1,24 @@
 <app-item-card 
 [usageType]="cardType" 
-[id]="user.id" 
 [imageUrl]="!user.imageUrl ? 'https://i.stack.imgur.com/CMJaF.jpg?s=256&g=1' : user.imageUrl"
-(favouriteChange)="processFavourite($event)"
+(favouriteChange)="processFavourite(user.id)"
 [favourite]="favourite"
 >
-    <ng-container *ngIf="cardType !== 'small' " ngProjectAs="title">
+    <ng-container *ngIf="cardType !== cardTypesEnum.small;else smallTitle" title>
         <p>
-            {{ user.firstName }}
+            {{ user.firstName }} {{ user.lastName }}
             <span class="mat-card-title-year">(Age: {{ user.age }})</span>
         </p>
     </ng-container>
 
-    <ng-container *ngIf="cardType === 'small' " ngProjectAs="[title]">
+    <ng-template #smallTitle title>
         <p>
             {{ user.firstName }}
             <span class="mat-card-title-year">(Age: {{ user.age }})</span>
         </p>
-    </ng-container>
+    </ng-template>
     
-    <ng-container ngProjectAs="user">
+    <ng-container content *ngIf="cardType !== cardTypesEnum.small">
         <div>
             <p>Gender: 
                 <span>{{ !user.gender ? 'Male' : 'Female' }}</span>

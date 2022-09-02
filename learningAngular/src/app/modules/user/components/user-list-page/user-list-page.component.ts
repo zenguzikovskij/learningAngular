@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CardTypes } from 'src/app/shared/enums/cardTemplate.types';
 import { FavouriteTypes } from 'src/app/shared/enums/favourite.types';
 import { FavouritesService } from 'src/app/shared/services/favourites.service';
 import { User } from '../../interfaces/user.interface';
@@ -12,6 +13,7 @@ import { UsersDataService } from '../../services/users-data.service';
 export class UserListPageComponent implements OnInit {
   users: User[];
   favouriteUsers: User[] = [];
+  cardTypesEnum = CardTypes;
 
   constructor(private usersDataService: UsersDataService, private favouritesDataService: FavouritesService) { }
 

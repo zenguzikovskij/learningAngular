@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CardTypes } from 'src/app/shared/enums/cardTemplate.types';
 import { User } from '../../interfaces/user.interface';
 
 @Component({
@@ -8,7 +9,7 @@ import { User } from '../../interfaces/user.interface';
 })
 export class UserListComponent implements OnInit {
   @Input() users: User[];
-  @Input() cardType: string;
+  @Input() cardType: CardTypes;
   @Input() favourite: boolean | number;
   @Input() favouriteList?: User[];
   

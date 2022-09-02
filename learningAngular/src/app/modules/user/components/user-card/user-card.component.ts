@@ -1,28 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CardTypes } from 'src/app/shared/enums/cardTemplate.types';
 import { User } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss', '../../../../styles/styles.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./user-card.component.scss', '../../../../styles/styles.scss']
 })
 export class UserCardComponent implements OnInit {
   @Input() user: User;
-  @Input() cardType: string;
+  @Input() cardType: CardTypes;
   @Input() favourite: boolean | number;
 
   @Output() favouriteChange = new EventEmitter <number> ();
-  
-  numberOfTicks: number = 0;
 
-  constructor(private ref: ChangeDetectorRef) { 
+  cardTypesEnum = CardTypes;
 
-    setInterval( () => {
-      this.numberOfTicks++;
-      this.ref.markForCheck();
-    }, 1000);
-   }
+  constructor() { }
 
   ngOnInit(): void {
   }
