@@ -1,0 +1,16 @@
+<div class="user-work" [formGroup]="userWorkGroup">
+
+    <p>Work</p>
+    
+    <mat-form-field appearance="fill">
+        <mat-label>Company</mat-label>
+        <input matInput type="text" placeholder="me@me.com" formControlName="company">
+        <mat-error *ngIf="company?.invalid"> {{ generateError(company) }} </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Department</mat-label>
+        <input matInput type="text" placeholder="me@me.com" formControlName="department">
+        <mat-error *ngIf="department?.invalid"> {{ generateError(department) }} </mat-error>
+    </mat-form-field>
+</div>

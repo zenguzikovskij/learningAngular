@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { delay, Observable, of } from 'rxjs';
 import { Car } from '../interfaces/car.interface';
 
 @Injectable({
@@ -26,7 +27,7 @@ export class CarServiceService {
   ]
   constructor() { }
 
-  getCars(): Car[] {
-    return this.cars;
+  getCars(): Observable<Car[]> {
+    return of(this.cars).pipe(delay(500));
   }
 }

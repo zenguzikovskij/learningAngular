@@ -14,6 +14,7 @@ export class CarItemComponent implements OnInit {
   @Output() favouriteChange = new EventEmitter <number> ();
 
   cardTypesEnum = CardTypes;
+  DEFAULT_AVATAR = 'https://material.angular.io/assets/img/examples/shiba2.jpg';
 
   constructor() { }
 

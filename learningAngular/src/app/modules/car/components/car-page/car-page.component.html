@@ -3,18 +3,21 @@
     <h2>Cars List</h2>
   </div>
   <div class="cards-content">
-    <app-car-list 
-      [cardType]="cardTypesEnum.medium" 
-      [cars]="cars" 
-      (favouriteChange)="updateFavouriteList($event)"
-      [favouriteList]="favouriteCars">
-    </app-car-list>
-    <app-favourite-bar *ngIf="favouriteCars.length > 0">
-        <app-car-list 
-          [cardType]="cardTypesEnum.small" 
-          ngProjectAs='item-list' 
-          [cars]="favouriteCars"
+    <mat-spinner *ngIf="cars == null;else carsList"></mat-spinner>
+    <ng-template #carsList >
+      <app-car-list 
+        [cardType]="cardTypesEnum.medium" 
+        [cars]="cars" 
+        (favouriteChange)="updateFavouriteList($event)"
+        [favouriteList]="favouriteCars">
+      </app-car-list>
+      <app-favourite-bar *ngIf="favouriteCars.length > 0">
+          <app-car-list 
+            [cardType]="cardTypesEnum.small" 
+            ngProjectAs='item-list' 
+            [cars]="favouriteCars"
           ></app-car-list>
-    </app-favourite-bar>
-    </div>
+      </app-favourite-bar>
+    </ng-template>
+  </div>
 </div>

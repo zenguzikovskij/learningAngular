@@ -1,6 +1,6 @@
 <app-item-card 
 [usageType]="cardType"
-[imageUrl]="!car.imageUrl ? 'https://material.angular.io/assets/img/examples/shiba2.jpg' : car.imageUrl"
+[imageUrl]="!car.imageUrl ? DEFAULT_AVATAR : car.imageUrl"
 (favouriteChange)="processFavourite(car.id)"
 [favourite]="favourite"
 >

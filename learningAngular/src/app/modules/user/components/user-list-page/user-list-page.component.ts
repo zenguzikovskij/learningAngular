@@ -18,11 +18,17 @@ export class UserListPageComponent implements OnInit {
   constructor(private usersDataService: UsersDataService, private favouritesDataService: FavouritesService) { }
 
   ngOnInit(): void {
-    this.users = this.usersDataService.getUsers();
-    this.fillFavourites();
+    // this.users = this.usersDataService.getUsers();
+    console.log('init');
+    
+    this.usersDataService
+          .getUsersObs()
+          .subscribe(userList => {
+            this.users = userList;
+            console.log('length of user list is', this.users.length)
+            this.fillFavourites();
+          });
   }
-
-  
 
   updateFavouriteList(id: number) {
     let result = this.favouritesDataService.toggleFavourite(FavouriteTypes.user, id);
@@ -30,6 +36,7 @@ export class UserListPageComponent implements OnInit {
   }
 
   fillFavourites(): void {
+    console.log('user list', this.users)
     let favouriteIds = this.favouritesDataService.getFavourites(FavouriteTypes.user);
     this.favouriteUsers = [];
 

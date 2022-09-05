@@ -15,6 +15,7 @@ export class UserCardComponent implements OnInit {
   @Output() favouriteChange = new EventEmitter <number> ();
 
   cardTypesEnum = CardTypes;
+  DEFAULT_AVATAR = 'https://i.stack.imgur.com/CMJaF.jpg?s=256&g=1';
 
   constructor() { }
 

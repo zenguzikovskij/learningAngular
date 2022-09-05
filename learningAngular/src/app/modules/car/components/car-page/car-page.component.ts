@@ -19,8 +19,12 @@ export class CarPageComponent implements OnInit {
   constructor(private carsDataService: CarServiceService, private favouritesDataService: FavouritesService) { }
 
   ngOnInit(): void {
-    this.cars = this.carsDataService.getCars();
-    this.fillFavourites();
+    this.carsDataService
+          .getCars()
+          .subscribe( carsList => {
+            this.cars = carsList;
+            this.fillFavourites();
+          });
   }
 
   

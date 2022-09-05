@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { UsersDataService } from './services/users-data.service';
@@ -17,20 +19,23 @@ import { UserListComponent } from './components/user-list/user-list.component';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FavouritesService } from '../../shared/services/favourites.service';
-import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { UserRoutingModule } from './user-routing.module';
-import { MatInputModule } from '@angular/material/input';
 import { UserRegistrationPageComponent } from './components/user-registration-page/user-registration-page.component';
 import { UserListPageComponent } from './components/user-list-page/user-list-page.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
+import { UserFormInfoComponent } from './components/user-form-info/user-form-info.component';
+import { UserFormWorkComponent } from './components/user-form-work/user-form-work.component';
 
 @NgModule({
   declarations: [
     UserPageComponent,
     UserCardComponent,
     UserListComponent,
-    UserRegistrationComponent,
     UserRegistrationPageComponent,
-    UserListPageComponent
+    UserListPageComponent,
+    UserFormComponent,
+    UserFormInfoComponent,
+    UserFormWorkComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +50,7 @@ import { UserListPageComponent } from './components/user-list-page/user-list-pag
     MatRadioModule,
     MatSelectModule,
     MatInputModule,
+    MatProgressSpinnerModule,
 
     SharedModule,
     UserRoutingModule,

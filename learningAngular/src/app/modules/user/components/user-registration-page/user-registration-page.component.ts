@@ -16,7 +16,24 @@ export class UserRegistrationPageComponent implements OnInit {
   }
 
   sendNewUser(newUserObj: User) {
-    this.userDataService.addUser(newUserObj);
-    this.router.navigate(['users-list']);
+    let userToSubmit = this.generateNewUser(newUserObj);
+
+    this.userDataService.addUser(userToSubmit)
+      .subscribe( isAdded => isAdded ? this.router.navigate(['users-list']) : console.log('Something went wrong', isAdded) );
+  }
+
+  generateNewUser(obj: {[key: string]: any} ): User {
+    let newUser = {
+      id: 0,
+      firstName: obj['userInfo'].firstName,
+      lastName: obj['userInfo'].lastName,
+      age:  obj['userInfo'].age,
+      gender:  obj['userInfo'].gender,
+      email:  obj['userInfo'].email,
+      department:  obj['userWork'].department,
+      company:  obj['userWork'].company,
+    };
+
+    return newUser;
   }
 }

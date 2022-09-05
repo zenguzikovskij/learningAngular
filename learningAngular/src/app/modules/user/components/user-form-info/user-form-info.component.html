@@ -1,0 +1,36 @@
+<div class="user-info" [formGroup]="userInfoGroup">
+    <p>Personal Information</p>
+
+    <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" placeholder="James" formControlName="firstName">
+        <mat-error *ngIf="firstName?.invalid"> {{ generateError(firstName) }} </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" placeholder="Hamilton" formControlName="lastName">
+        <mat-error *ngIf="lastName?.invalid"> {{ generateError(lastName) }} </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Age</mat-label>
+        <input matInput type="number" placeholder="Ex. 12" formControlName="age" min="1">
+        <mat-error *ngIf="age?.invalid"> {{ generateError(age) }} </mat-error>
+        <span matSuffix>year(s)</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" placeholder="me@me.com" formControlName="email">
+        <mat-error *ngIf="email?.invalid"> {{ generateError(email) }} </mat-error>
+    </mat-form-field>
+
+    <label>Gender: </label>
+    <mat-radio-group formControlName="gender">
+        <mat-radio-button [value]=true>Male</mat-radio-button>
+        <mat-radio-button [value]=false>Female</mat-radio-button>
+        <mat-error *ngIf="gender?.invalid"> {{ generateError(gender) }} </mat-error>
+    </mat-radio-group>
+
+</div>

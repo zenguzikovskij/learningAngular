@@ -3,18 +3,21 @@
         <h2>Users List</h2>
     </div>
     <div class="cards-content">
-        <app-user-list 
-        [cardType]="cardTypesEnum.medium" 
-        [users]="users" 
-        (favouriteChange)="updateFavouriteList($event)" 
-        [favouriteList]="favouriteUsers">
-    </app-user-list>
-        <app-favourite-bar *ngIf="favouriteUsers.length > 0">
-            <app-user-list 
-            [cardType]="cardTypesEnum.small" 
-            ngProjectAs='item-list' 
-            [users]="favouriteUsers">
-        </app-user-list>
-        </app-favourite-bar>
+        <mat-spinner *ngIf="users == null;else usersList"></mat-spinner>
+        <ng-template #usersList >
+            <app-user-list
+            [cardType]="cardTypesEnum.medium" 
+            [users]="users" 
+            (favouriteChange)="updateFavouriteList($event)" 
+            [favouriteList]="favouriteUsers">
+            </app-user-list>
+            <app-favourite-bar *ngIf="favouriteUsers.length > 0">
+                <app-user-list 
+                [cardType]="cardTypesEnum.small" 
+                ngProjectAs='item-list' 
+                [users]="favouriteUsers">
+            </app-user-list>
+            </app-favourite-bar>
+        </ng-template>
     </div>
 </div>

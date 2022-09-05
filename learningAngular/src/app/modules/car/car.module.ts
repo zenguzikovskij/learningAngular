@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CarListComponent } from './components/car-list/car-list.component';
 import { CarItemComponent } from './components/car-item/car-item.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -20,11 +21,14 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
-    FormsModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
+
     SharedModule
   ]
 })
