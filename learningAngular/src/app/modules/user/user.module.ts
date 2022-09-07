@@ -35,7 +35,7 @@ import { UserFormWorkComponent } from './components/user-form-work/user-form-wor
     UserListPageComponent,
     UserFormComponent,
     UserFormInfoComponent,
-    UserFormWorkComponent
+    UserFormWorkComponent,
   ],
   imports: [
     CommonModule,

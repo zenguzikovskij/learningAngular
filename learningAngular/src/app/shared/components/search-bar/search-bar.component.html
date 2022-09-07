@@ -1,0 +1,8 @@
+
+<mat-form-field [formGroup]="search">
+    <mat-label>Search</mat-label>
+    <input matInput type="text" formControlName="criteria">
+    <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>

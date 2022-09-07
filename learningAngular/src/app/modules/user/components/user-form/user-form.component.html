@@ -1,6 +1,6 @@
 
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <app-user-form-info [userInfoGroup]="getUserInfoGroup"></app-user-form-info>
-    <app-user-form-work [userWorkGroup]="getUserWorkGroup"></app-user-form-work>
+    <app-user-form-info [userInfo]="userInfo"></app-user-form-info>
+    <app-user-form-work [userWork]="userWork"></app-user-form-work>
     <button mat-raised-button type="submit">Submit</button>
 </form>

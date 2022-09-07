@@ -23,15 +23,17 @@ export class UserRegistrationPageComponent implements OnInit {
   }
 
   generateNewUser(obj: {[key: string]: any} ): User {
+    let user = obj['user'];
+
     let newUser = {
       id: 0,
-      firstName: obj['userInfo'].firstName,
-      lastName: obj['userInfo'].lastName,
-      age:  obj['userInfo'].age,
-      gender:  obj['userInfo'].gender,
-      email:  obj['userInfo'].email,
-      department:  obj['userWork'].department,
-      company:  obj['userWork'].company,
+      firstName: user['info'].firstName,
+      lastName: user['info'].lastName,
+      age:  user['info'].age,
+      gender:  user['info'].gender,
+      email:  user['info'].email,
+      department:  user['work'].department,
+      company:  user['work'].company,
     };
 
     return newUser;

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UsersDataValidatorService } from '../../services/validators/users-data-validator.service';
 
 @Component({
   selector: 'app-user-form-info',
@@ -7,17 +8,40 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./user-form-info.component.scss', '../../../../styles/styles.scss']
 })
 export class UserFormInfoComponent implements OnInit {
-  @Input() userInfoGroup: FormGroup;
+  @Input() userInfo: FormGroup;
 
-  constructor() {}
+  firstNameControl = new FormControl('', [ Validators.required ]);
+  lastNameControl = new FormControl('', [ Validators.required ]);
+  genderControl = new FormControl(true, [ Validators.required ]);
+  ageControl = new FormControl(15, [
+      Validators.required,
+      Validators.min(15),
+      Validators.max(100)]);
+  emailControl = new FormControl('', [
+      Validators.required,
+      Validators.email,
+      this.usersDataValidator.ValidateEmail],
+      [ this.usersDataValidator.isUnique.bind(this.usersDataValidator) ]);
 
-  ngOnInit(): void {}
+  constructor(private usersDataValidator: UsersDataValidatorService) {
+    
+  }
 
-  get firstName(): FormControl { return this.userInfoGroup.get('firstName') as FormControl };
-  get lastName(): FormControl { return this.userInfoGroup.get('lastName') as FormControl };
-  get age(): FormControl { return this.userInfoGroup.get('age') as FormControl };
-  get email(): FormControl { return this.userInfoGroup.get('email') as FormControl };
-  get gender(): FormControl { return this.userInfoGroup.get('gender') as FormControl };
+  ngOnChanges(): void {}
+
+  ngOnInit(): void {
+    this.userInfo.addControl('firstName', this.firstNameControl);
+    this.userInfo.addControl('lastName', this.lastNameControl);
+    this.userInfo.addControl('gender', this.genderControl);
+    this.userInfo.addControl('age', this.ageControl);
+    this.userInfo.addControl('email', this.emailControl);
+  }
+
+  get firstName(): FormControl { return this.userInfo.get('firstName') as FormControl };
+  get lastName(): FormControl { return this.userInfo.get('lastName') as FormControl };
+  get age(): FormControl { return this.userInfo.get('age') as FormControl };
+  get email(): FormControl { return this.userInfo.get('email') as FormControl };
+  get gender(): FormControl { return this.userInfo.get('gender') as FormControl };
 
   generateError(control: FormControl): string {
     let message = '';    

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-form-work',
@@ -7,16 +7,21 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./user-form-work.component.scss']
 })
 export class UserFormWorkComponent implements OnInit {
-  @Input() userWorkGroup: FormGroup;
+  @Input() userWork: FormGroup;
+
+  companyControl = new FormControl('', [ Validators.maxLength(35) ]);
+  departmentControl = new FormControl('', [ Validators.minLength(6) ]);
 
   constructor() { 
-   }
-
-  ngOnInit(): void {
   }
 
-  get company() { return this.userWorkGroup.get('company') as FormControl };
-  get department() { return this.userWorkGroup.get('department') as FormControl };
+  ngOnInit(): void {
+    this.userWork.addControl('company', this.companyControl);
+    this.userWork.addControl('department', this.departmentControl);
+  }
+
+  get company() { return this.userWork.get('company') as FormControl };
+  get department() { return this.userWork.get('department') as FormControl };
 
   generateError(control: FormControl): string {
     let message = '';

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { take } from 'rxjs';
 import { CardTypes } from 'src/app/shared/enums/cardTemplate.types';
 import { FavouriteTypes } from 'src/app/shared/enums/favourite.types';
 import { FavouritesService } from 'src/app/shared/services/favourites.service';
@@ -12,22 +14,28 @@ import { UsersDataService } from '../../services/users-data.service';
 })
 export class UserListPageComponent implements OnInit {
   users: User[];
+  usersFilter: string;
   favouriteUsers: User[] = [];
   cardTypesEnum = CardTypes;
 
-  constructor(private usersDataService: UsersDataService, private favouritesDataService: FavouritesService) { }
+  searchGroup: FormGroup;
+  searchCriteria: string = '';
+
+  constructor(private usersDataService: UsersDataService, private favouritesDataService: FavouritesService) { 
+    this.searchGroup = new FormGroup({});
+  }
 
   ngOnInit(): void {
-    // this.users = this.usersDataService.getUsers();
-    console.log('init');
+    this.searchGroup.valueChanges.subscribe( () => {
+      this.searchCriteria = this.searchGroup.get('criteria')?.value;
+      this.usersDataService.getUsersObs(this.searchCriteria).pipe(take(1))
+        .subscribe(userList => {
+          this.users = userList;
+          this.fillFavourites();
+        });
+    })
+
     
-    this.usersDataService
-          .getUsersObs()
-          .subscribe(userList => {
-            this.users = userList;
-            console.log('length of user list is', this.users.length)
-            this.fillFavourites();
-          });
   }
 
   updateFavouriteList(id: number) {
@@ -36,7 +44,6 @@ export class UserListPageComponent implements OnInit {
   }
 
   fillFavourites(): void {
-    console.log('user list', this.users)
     let favouriteIds = this.favouritesDataService.getFavourites(FavouriteTypes.user);
     this.favouriteUsers = [];
 

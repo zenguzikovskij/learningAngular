@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { User } from '../interfaces/user.interface';
 
@@ -28,8 +28,26 @@ export class UsersDataService {
   
   constructor() { }
 
-  getUsersObs(): Observable<User[]> {
-    return of(this.users).pipe(delay(500));
+  getUsersObs(searchCriteria: string): Observable<User[]> {
+    return of(searchCriteria).pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(this.getUsers.bind(this))
+      );
+  }
+
+  getUsers(querySearch: string) {
+    return of( 
+      this.users.filter( user => this.isUserMatching(user, querySearch))
+    ).pipe(delay(500));
+  }
+  
+  private getUserFullName( firstName: string, lastName: string ) {
+    return firstName.concat(' ', lastName).toLowerCase();
+  }
+
+  private isUserMatching(user: User, searchQuery: string) {
+    return this.getUserFullName(user.firstName, user.lastName).match( RegExp(`.*${searchQuery.toLowerCase()}.*`) );
   }
 
   addUser(userObj: User): Observable<boolean> {

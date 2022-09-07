@@ -1,6 +1,7 @@
 <div class="contentContainer">
     <div class="cards-header">
         <h2>Users List</h2>
+        <app-search-bar [search]="searchGroup"></app-search-bar>
     </div>
     <div class="cards-content">
         <mat-spinner *ngIf="users == null;else usersList"></mat-spinner>

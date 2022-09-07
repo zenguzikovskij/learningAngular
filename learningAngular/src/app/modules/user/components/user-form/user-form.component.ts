@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '../../interfaces/user.interface';
-import { UsersDataService } from '../../services/users-data.service';
-import { EmailValidator } from '../../services/validators/email.validator';
 
 @Component({
   selector: 'app-user-form',
@@ -15,46 +13,23 @@ export class UserFormComponent implements OnInit {
 
   userForm!: FormGroup;
 
-  firstName = new FormControl('', [ Validators.required ]);
-  lastName = new FormControl('', [ Validators.required ]);
-  gender = new FormControl(true, [ Validators.required ]);
-  company = new FormControl('', [ Validators.maxLength(35) ]);
-  department = new FormControl('', [ Validators.minLength(6) ]);
-  age = new FormControl(15, [
-      Validators.required,
-      Validators.min(15),
-      Validators.max(100)]);
-  email = new FormControl('', [
-      Validators.required,
-      Validators.email,
-      EmailValidator.ValidateEmail],
-      [ EmailValidator.isUnique(this.userService) ]);
+  constructor( private formBuilder: FormBuilder ) {
+    this.initForm();
+  }
 
-  constructor( private formBuilder: FormBuilder, private userService: UsersDataService ) { 
+  ngOnInit(): void { 
+  }
+
+  get userInfo(){ return this.userForm.get(['user', 'info']) as FormGroup; }
+  get userWork(){ return this.userForm.get(['user', 'work']) as FormGroup; }
+
+  initForm() {
     this.userForm = this.formBuilder.group({
-      userInfo: this.formBuilder.group({
-          firstName: this.firstName,
-          lastName: this.lastName,
-          age: this.age,
-          email: this.email,
-          gender: this.gender,
-      }),
-      userWork: this.formBuilder.group({
-          company: this.company,
-          department: this.department
+      user: this.formBuilder.group({
+        info: this.formBuilder.group({}),
+        work: this.formBuilder.group({})
       })
     });
-  }
-
-  ngOnInit(): void {  
-  }
-
-  get getUserInfoGroup(): FormGroup {
-    return this.userForm.get('userInfo') as FormGroup;
-  }
-
-  get getUserWorkGroup(): FormGroup {
-    return this.userForm.get('userWork') as FormGroup;
   }
 
   onSubmit(): void {
