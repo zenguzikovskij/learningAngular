@@ -63,6 +63,20 @@ export class UsersDataService {
     return of( this.users.push(newUser) === (oldLength + 1)).pipe(delay(500));
   }
 
+  updateUserById(id: number, userObj: User): Observable<User> {
+    let updatedUser = this.generateNewUser(userObj);
+    let oldUserIndex = this.users.findIndex( user => user.id === id);
+    
+    updatedUser.id = id;
+    this.users[oldUserIndex] = updatedUser;
+
+    console.log('generated user is', updatedUser);
+    console.log('user list now is', this.users);
+    
+    
+    return of( this.users[oldUserIndex]).pipe(delay(500));
+  }
+
   generateNewUser(obj: {[key: string]: any} ): User {
     console.log('service got', obj);
     

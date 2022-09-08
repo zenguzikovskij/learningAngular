@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { objectAny } from 'src/app/shared/interfaces/objectAny.interface';
+import { User } from '../../interfaces/user.interface';
 import { UserAddress } from '../../interfaces/userAddress.interface';
 import { UserInfo } from '../../interfaces/userInfo.interface';
 import { UserWork } from '../../interfaces/userWork.interface';
@@ -25,7 +26,11 @@ export class UserEditPageComponent implements OnInit {
   userId: number;
   userObject: segmentedUser;
 
-  constructor(private route: ActivatedRoute, private usersDataService: UsersDataService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private usersDataService: UsersDataService,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {  
     this.route.params.pipe(first()).subscribe( params => {
@@ -40,6 +45,11 @@ export class UserEditPageComponent implements OnInit {
         this.isLoaded = true;
       })
     })
+  }
+
+  sendUpdatedUser(newUserObj: User) {
+    this.usersDataService.updateUserById(this.userId, newUserObj)
+      .subscribe( isAdded => isAdded ? this.router.navigate(['users-list']) : console.log('Something went wrong', isAdded) );
   }
 
   separateUserLogic( serverUser: objectAny ): segmentedUser {

@@ -6,7 +6,7 @@
         </div>
         <div class="cards-content">
             <app-user-form 
-                (formSubmitChange)="''"
+                (formSubmitChange)="sendUpdatedUser($event)"
                 [activeUser]="userObject"
             ></app-user-form>
         </div>
