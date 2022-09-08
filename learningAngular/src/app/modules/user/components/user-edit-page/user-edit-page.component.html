@@ -1,0 +1,14 @@
+<div class="contentContainer">
+    <mat-spinner *ngIf="userObject === undefined;else editUser"></mat-spinner>
+    <ng-template #editUser>
+        <div class="cards-header">
+            <h2>Edit {{ userObject.info.firstName }}'s Account</h2>
+        </div>
+        <div class="cards-content">
+            <app-user-form 
+                (formSubmitChange)="''"
+                [activeUser]="userObject"
+            ></app-user-form>
+        </div>
+    </ng-template>
+</div>

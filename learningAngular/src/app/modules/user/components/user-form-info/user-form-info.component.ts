@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserInfo } from '../../interfaces/userInfo.interface';
 import { UsersDataValidatorService } from '../../services/validators/users-data-validator.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { UsersDataValidatorService } from '../../services/validators/users-data-
 })
 export class UserFormInfoComponent implements OnInit {
   @Input() userInfo: FormGroup;
+  @Input() activeUser?: UserInfo;
 
   firstNameControl = new FormControl('', [ Validators.required ]);
   lastNameControl = new FormControl('', [ Validators.required ]);
@@ -35,6 +37,10 @@ export class UserFormInfoComponent implements OnInit {
     this.userInfo.addControl('gender', this.genderControl);
     this.userInfo.addControl('age', this.ageControl);
     this.userInfo.addControl('email', this.emailControl);
+
+    if(this.activeUser) {
+      this.userInfo.setValue(this.activeUser);
+    }
   }
 
   get firstName(): FormControl { return this.userInfo.get('firstName') as FormControl };

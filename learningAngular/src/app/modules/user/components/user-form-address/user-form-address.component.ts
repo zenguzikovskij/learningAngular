@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserAddress } from '../../interfaces/userAddress.interface';
 
 @Component({
   selector: 'app-user-form-address',
@@ -9,6 +10,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 export class UserFormAddressComponent implements OnInit {
   @Input() addressFormControl: AbstractControl;
   @Input() index: number;
+  @Input() activeUser?: UserAddress[];
 
   addressFormGroup: FormGroup;
 
@@ -36,7 +38,10 @@ export class UserFormAddressComponent implements OnInit {
         this.zipControl.clearValidators();
         this.zipControl.disable();
       }
-    })
+    });
+    if(this.activeUser && this.activeUser[0]['address-line']) {
+      this.addressFormGroup.setValue(this.activeUser);
+    }
   }
 
   get formGroup() { return this.addressFormControl as FormGroup; }

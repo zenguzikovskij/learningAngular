@@ -1,6 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '../../interfaces/user.interface';
+import { UserAddress } from '../../interfaces/userAddress.interface';
+import { UserInfo } from '../../interfaces/userInfo.interface';
+import { UserWork } from '../../interfaces/userWork.interface';
 
 @Component({
   selector: 'app-user-form',
@@ -9,9 +12,11 @@ import { User } from '../../interfaces/user.interface';
 })
 
 export class UserFormComponent implements OnInit {
+  @Input() activeUser?: { info: UserInfo, work: UserWork, addr: UserAddress[]};
   @Output() formSubmitChange = new EventEmitter<User>();
 
   userForm!: FormGroup;
+
   removeAddress = (addressIndex: number) => {
     this.addresses.removeAt(addressIndex);
   }

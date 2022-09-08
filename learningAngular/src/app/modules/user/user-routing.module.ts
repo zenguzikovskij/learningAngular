@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserEditPageComponent } from './components/user-edit-page/user-edit-page.component';
 import { UserListPageComponent } from './components/user-list-page/user-list-page.component';
 
 import { UserPageComponent } from './components/user-page/user-page.component';
@@ -24,11 +25,16 @@ const routes: Routes = [
       },
 
       {
+        path: 'user/edit/:id',
+        title: 'Edit User',
+        component: UserEditPageComponent
+      },
+
+      {
         path: '',
         redirectTo: 'users-list',
         pathMatch: 'full'
-      }
-
+      },
     ]
   }
 ]

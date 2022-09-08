@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserWork } from '../../interfaces/userWork.interface';
 
 @Component({
   selector: 'app-user-form-work',
@@ -8,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class UserFormWorkComponent implements OnInit {
   @Input() userWork: FormGroup;
+  @Input() activeUser?: UserWork;
 
   companyControl = new FormControl('', [ Validators.maxLength(35) ]);
   departmentControl = new FormControl('', [ Validators.minLength(6) ]);
@@ -18,6 +20,10 @@ export class UserFormWorkComponent implements OnInit {
   ngOnInit(): void {
     this.userWork.addControl('company', this.companyControl);
     this.userWork.addControl('department', this.departmentControl);
+
+    if(this.activeUser) {
+      this.userWork.setValue(this.activeUser);
+    }
   }
 
   get company() { return this.userWork.get('company') as FormControl };

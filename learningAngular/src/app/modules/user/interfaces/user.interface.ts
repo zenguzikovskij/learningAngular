@@ -1,3 +1,5 @@
+import { UserAddress } from "./userAddress.interface";
+
 export interface User {
   id: number,
   firstName: string,
@@ -8,9 +10,5 @@ export interface User {
   department: string,
   company: string,
   imageUrl?: string,
-  address?: Array<{ 
-                    'address-line': string,
-                    city?: string,
-                    zip?: string 
-                  }>
+  address?: Array< UserAddress >
   }

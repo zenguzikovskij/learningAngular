@@ -41,6 +41,10 @@ export class UsersDataService {
       this.users.filter( user => this.isUserMatching(user, querySearch))
     ).pipe(delay(500));
   }
+
+  getUserById(id: number): Observable<User | undefined> {
+    return of(this.users.find( user => user.id === id)).pipe(delay(500));
+  }
   
   private getUserFullName( firstName: string, lastName: string ) {
     return firstName.concat(' ', lastName).toLowerCase();
