@@ -51,10 +51,32 @@ export class UsersDataService {
   }
 
   addUser(userObj: User): Observable<boolean> {
-    let oldLength = this.users.length;
-    userObj.id = oldLength + 1;
+    let newUser = this.generateNewUser(userObj);
     
-    return of( this.users.push(userObj) === (oldLength + 1)).pipe(delay(500));
+    let oldLength = this.users.length;
+    newUser.id = oldLength + 1;
+    
+    return of( this.users.push(newUser) === (oldLength + 1)).pipe(delay(500));
+  }
+
+  generateNewUser(obj: {[key: string]: any} ): User {
+    console.log('service got', obj);
+    
+    let user = obj['user'];
+
+    let newUser = {
+      id: 0,
+      firstName: user['info'].firstName,
+      lastName: user['info'].lastName,
+      age:  user['info'].age,
+      gender:  user['info'].gender,
+      email:  user['info'].email,
+      department:  user['work'].department,
+      company:  user['work'].company,
+      address: user.addressArray
+    };
+
+    return newUser;
   }
 
   checkUniqueness(email: string): Observable<boolean> {

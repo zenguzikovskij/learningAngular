@@ -29,6 +29,11 @@
             <p>Company: 
                 <span>{{ user.company }}</span>
             </p>
+            <p *ngFor="let address of user.address; let i=index">Address {{ i + 1 }}: 
+                <span>{{ address['address-line'] }}</span>
+                <span *ngIf="address.city">{{ ' ' + address.city + ' ' + address.zip }}</span>
+            </p>
+
         </div> 
     </ng-container>
     

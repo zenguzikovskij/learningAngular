@@ -2,5 +2,26 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <app-user-form-info [userInfo]="userInfo"></app-user-form-info>
     <app-user-form-work [userWork]="userWork"></app-user-form-work>
+    <div class="address-holder" [formGroup]="userGroup">
+        <div class="form-address-header">
+            <p>Addresses</p>
+            <button mat-mini-fab color="grey" type="button" (click)="addAddress()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div class="form-address-list" formArrayName="addressArray">
+            <app-user-form-address 
+                *ngFor="let address of addresses.controls; let i=index" 
+                [addressFormControl]="address" 
+                [index]="i"
+            >
+                <ng-container *ngIf="addresses.length > 1" removeButton>
+                    <button mat-mini-fab color="grey" type="button" (click)="removeAddress(i)">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                </ng-container>
+            </app-user-form-address>
+        </div>
+    </div>
     <button mat-raised-button type="submit">Submit</button>
 </form>

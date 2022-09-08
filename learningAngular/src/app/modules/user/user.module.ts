@@ -25,6 +25,7 @@ import { UserListPageComponent } from './components/user-list-page/user-list-pag
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { UserFormInfoComponent } from './components/user-form-info/user-form-info.component';
 import { UserFormWorkComponent } from './components/user-form-work/user-form-work.component';
+import { UserFormAddressComponent } from './components/user-form-address/user-form-address.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserFormWorkComponent } from './components/user-form-work/user-form-wor
     UserFormComponent,
     UserFormInfoComponent,
     UserFormWorkComponent,
+    UserFormAddressComponent,
   ],
   imports: [
     CommonModule,

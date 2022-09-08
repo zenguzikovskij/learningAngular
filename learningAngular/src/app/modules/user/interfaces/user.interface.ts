@@ -7,5 +7,10 @@ export interface User {
   email: string,
   department: string,
   company: string,
-  imageUrl?: string
+  imageUrl?: string,
+  address?: Array<{ 
+                    'address-line': string,
+                    city?: string,
+                    zip?: string 
+                  }>
   }
