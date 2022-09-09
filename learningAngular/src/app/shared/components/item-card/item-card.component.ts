@@ -10,7 +10,7 @@ export class ItemCardComponent implements OnInit {
   @Input() imageUrl?: string;
   @Input() favourite: boolean | number;
   @Input() usageType?: CardTypes;
-  @Output() favouriteChange = new EventEmitter <number> ();
+  @Output() favouriteChange = new EventEmitter <string> ();
   
   cardTypesEnum = CardTypes;
   
@@ -19,7 +19,7 @@ export class ItemCardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  addToFavourites(id: number): void {
-    this.favouriteChange.emit(id);
+  addToFavourites(): void {
+    this.favouriteChange.emit('clicked');
   }
 }

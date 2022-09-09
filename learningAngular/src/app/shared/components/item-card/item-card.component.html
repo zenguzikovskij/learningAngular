@@ -18,9 +18,11 @@
     </mat-card-content>
     <mat-card-actions *ngIf="usageType === cardTypesEnum.medium">
 
-      <button mat-stroked-button (click)="addToFavourites(0)">
+      <button mat-stroked-button (click)="addToFavourites()">
         <mat-icon aria-label="Add to Favourite" class="material-icons-outlined">{{ favourite ? 'favorite' : 'favorite_outlined' }}</mat-icon>
       </button>
+
+      <ng-content select="[actions]"></ng-content>
       
     </mat-card-actions>
   </ng-container>

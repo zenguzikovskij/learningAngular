@@ -36,5 +36,11 @@
 
         </div> 
     </ng-container>
+
+    <ng-container actions>
+        <a mat-stroked-button [routerLink]="['/user/edit/', user.id]">
+            <mat-icon aria-label="Add to Favourite" class="material-icons-outlined">edit</mat-icon>
+        </a>
+    </ng-container>
     
 </app-item-card>
