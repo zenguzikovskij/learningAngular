@@ -17,11 +17,6 @@ export class UserFormComponent implements OnInit {
 
   userForm!: FormGroup;
 
-  removeAddress = (addressIndex: number) => {
-    this.addresses.removeAt(addressIndex);
-  }
-
-
   constructor( private formBuilder: FormBuilder ) {
     this.initForm();
   }
@@ -42,12 +37,8 @@ export class UserFormComponent implements OnInit {
         addressArray: this.formBuilder.array([])
       })
     });
-    this.addAddress();
   }
 
-  addAddress(): void {
-    this.addresses.push(this.formBuilder.group({}));
-  }
 
   onSubmit(): void {
     if(this.userForm.valid) {

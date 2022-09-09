@@ -1,0 +1,19 @@
+button[mat-mini-fab][type='button'] {
+    transform: scale(0.5);
+    box-shadow: none;
+}
+
+.form-address-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > p {
+        margin: 0;
+    }
+
+    & button[mat-mini-fab] {
+        transform: scale(0.87);
+        box-shadow: none !important;
+    }
+}

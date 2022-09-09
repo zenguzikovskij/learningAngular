@@ -1,0 +1,24 @@
+<div class="address-holder" [formGroup]="parentGroup">
+    <div class="form-address-header">
+        <p>Addresses</p>
+        <button mat-mini-fab color="grey" type="button" (click)="addAddress()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <div class="form-address-list" formArrayName="addressArray">
+
+        <app-user-form-address 
+            *ngFor="let address of addresses.controls; let i=index" 
+            [addressFormControl]="address" 
+            [index]="i"
+            [activeUser]="activeUser"
+        >
+            <ng-container *ngIf="addresses.length > 1" removeButton>
+                <button mat-mini-fab color="grey" type="button" (click)="removeAddress(i)">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </ng-container>
+            
+        </app-user-form-address>
+    </div>
+</div>
