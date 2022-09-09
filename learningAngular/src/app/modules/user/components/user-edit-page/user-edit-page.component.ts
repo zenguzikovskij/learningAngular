@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { first } from 'rxjs';
+import { first, Subscription } from 'rxjs';
 import { objectAny } from 'src/app/shared/interfaces/objectAny.interface';
 import { User } from '../../interfaces/user.interface';
 import { UserAddress } from '../../interfaces/userAddress.interface';
@@ -20,11 +20,13 @@ interface segmentedUser {
   styleUrls: ['./user-edit-page.component.scss', '../../../../styles/styles.scss']
 })
 
-export class UserEditPageComponent implements OnInit {
+export class UserEditPageComponent implements OnInit, OnDestroy {
   isLoaded: boolean = false;
 
   userId: number;
   userObject: segmentedUser;
+
+  subs: Subscription = new Subscription;
 
   constructor(
     private route: ActivatedRoute, 
@@ -33,18 +35,26 @@ export class UserEditPageComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {  
-    this.route.params.pipe(first()).subscribe( params => {
-      this.userId = +params['id'];
-      console.log('Got', this.userId);
+    this.subs.add( this.route.params
+      .pipe(first())
+      .subscribe( params => {
+        this.userId = +params['id'];
+        console.log('Got', this.userId);
 
-      this.usersDataService.getUserById(this.userId).pipe(first()).subscribe( user => {
-  
-        user ? this.userObject = this.separateUserLogic(user) : console.log('Failed to load user');
-        console.log(this.userObject);
+        this.usersDataService.getUserById(this.userId)
+          .pipe( first() )
+          .subscribe( user => {
+            user ? this.userObject = this.separateUserLogic(user) : console.log('Failed to load user');
+            console.log(this.userObject);
 
-        this.isLoaded = true;
+            this.isLoaded = true;
+          });
       })
-    })
+    );
+  }
+  
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   sendUpdatedUser(newUserObj: User) {

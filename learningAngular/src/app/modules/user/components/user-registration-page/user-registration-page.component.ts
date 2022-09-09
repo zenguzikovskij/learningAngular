@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
 import { UsersDataService } from '../../services/users-data.service';
 
+import { pipe, first } from 'rxjs';
+
 @Component({
   selector: 'app-user-registration-page',
   templateUrl: './user-registration-page.component.html',
@@ -17,6 +19,15 @@ export class UserRegistrationPageComponent implements OnInit {
 
   sendNewUser(newUserObj: User) {
     this.userDataService.addUser(newUserObj)
-      .subscribe( isAdded => isAdded ? this.router.navigate(['users-list']) : console.log('Something went wrong', isAdded) );
+    .pipe(
+      first()
+    )
+    .subscribe( isAdded => {
+      if (isAdded) {
+        this.router.navigate(['users-list']);
+      } else {
+        console.log('Something went wrong', isAdded);
+      }
+    });
   }
 }

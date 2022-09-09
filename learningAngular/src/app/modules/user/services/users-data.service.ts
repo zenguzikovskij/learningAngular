@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { delay, switchMap } from 'rxjs/operators';
 
 import { User } from '../interfaces/user.interface';
 
@@ -27,11 +27,19 @@ export class UsersDataService {
   ];
   
   constructor() { }
+  
+  private getUserFullName( firstName: string, lastName: string ) {
+    return firstName.concat(' ', lastName).toLowerCase();
+  }
+
+  private isUserMatching(user: User, searchQuery: string) {
+    
+    return this.getUserFullName(user.firstName, user.lastName).match( RegExp(`.*${searchQuery.toLowerCase()}.*`) );
+  }
 
   getUsersObs(searchCriteria: string): Observable<User[]> {
+    console.log(searchCriteria);
     return of(searchCriteria).pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
       switchMap(this.getUsers.bind(this))
       );
   }
@@ -43,15 +51,9 @@ export class UsersDataService {
   }
 
   getUserById(id: number): Observable<User | undefined> {
+    console.log(this.users);
+    
     return of(this.users.find( user => user.id === id)).pipe(delay(500));
-  }
-  
-  private getUserFullName( firstName: string, lastName: string ) {
-    return firstName.concat(' ', lastName).toLowerCase();
-  }
-
-  private isUserMatching(user: User, searchQuery: string) {
-    return this.getUserFullName(user.firstName, user.lastName).match( RegExp(`.*${searchQuery.toLowerCase()}.*`) );
   }
 
   addUser(userObj: User): Observable<boolean> {
@@ -59,8 +61,11 @@ export class UsersDataService {
     
     let oldLength = this.users.length;
     newUser.id = oldLength + 1;
+
+    let lengthAfterPush = this.users.push(newUser);
+    console.log('Added user', this.users[oldLength]);
     
-    return of( this.users.push(newUser) === (oldLength + 1)).pipe(delay(500));
+    return of( lengthAfterPush === (oldLength + 1)).pipe(delay(500));
   }
 
   updateUserById(id: number, userObj: User): Observable<User> {

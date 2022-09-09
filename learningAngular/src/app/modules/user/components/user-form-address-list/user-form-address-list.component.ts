@@ -16,12 +16,10 @@ export class UserFormAddressListComponent implements OnInit {
 
   ngOnInit(): void {
     this.addAddress();
-    console.log(this.parentGroup.controls)
   }
   
   addAddress(): void {
     this.addresses.push(this.formBuilder.group({}));
-    console.log(this.addresses);
   }
 
   removeAddress(addressIndex: number) {
