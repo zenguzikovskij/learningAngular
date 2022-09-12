@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UserAddress } from '../../interfaces/userAddress.interface';
@@ -11,7 +11,7 @@ import { UserAddress } from '../../interfaces/userAddress.interface';
 export class UserFormAddressComponent implements OnInit, OnDestroy {
   @Input() addressFormControl: AbstractControl;
   @Input() index: number;
-  @Input() activeUser?: UserAddress[];
+  @Output() isFormInit = new EventEmitter<boolean>(false);
 
   addressFormGroup: FormGroup;
   subs: Subscription = new Subscription;
@@ -23,31 +23,25 @@ export class UserFormAddressComponent implements OnInit, OnDestroy {
 
     let addressLine = new FormControl('', [ Validators.required ]);
     let city = new FormControl('');
-    let zip = new FormControl('');
+    let zip = new FormControl({ value: '', disabled: true}, [ Validators.required ]);
 
     this.addressFormGroup.addControl('address-line', addressLine);
     this.addressFormGroup.addControl('city', city);
     this.addressFormGroup.addControl('zip', zip);
-    this.zipControl.disable();
 
     this.subs.add(this.cityControl.valueChanges
       .subscribe( () => {
         if(this.cityControl.value) {
-          this.zipControl.setValidators( [Validators.required] );
           this.zipControl.enable();
         } 
         else {
           this.zipControl.setValue('');
-          this.zipControl.clearValidators();
           this.zipControl.disable();
         }
       })
     );
-    
-    if(this.activeUser && this.activeUser[0]['address-line']) {
-      this.addressFormGroup.setValue(this.activeUser);
-    }
 
+    this.isFormInit.emit(true);
   }
 
   ngOnDestroy(): void {

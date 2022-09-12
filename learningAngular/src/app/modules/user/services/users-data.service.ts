@@ -62,10 +62,10 @@ export class UsersDataService {
     let oldLength = this.users.length;
     newUser.id = oldLength + 1;
 
-    let lengthAfterPush = this.users.push(newUser);
+    this.users.push(newUser);
     console.log('Added user', this.users[oldLength]);
     
-    return of( lengthAfterPush === (oldLength + 1)).pipe(delay(500));
+    return of( true).pipe(delay(500));
   }
 
   updateUserById(id: number, userObj: User): Observable<User> {

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserInfo } from '../../interfaces/userInfo.interface';
+import { map, mergeWith, Subscription } from 'rxjs';
 import { UsersDataValidatorService } from '../../services/validators/users-data-validator.service';
 
 @Component({
@@ -8,9 +8,11 @@ import { UsersDataValidatorService } from '../../services/validators/users-data-
   templateUrl: './user-form-info.component.html',
   styleUrls: ['./user-form-info.component.scss', '../../../../styles/styles.scss']
 })
-export class UserFormInfoComponent implements OnInit {
+export class UserFormInfoComponent implements OnInit, OnDestroy {
   @Input() userInfo: FormGroup;
-  @Input() activeUser?: UserInfo;
+  @Output() isFormInit = new EventEmitter <boolean> (false);
+
+  subs: Subscription = new Subscription;
 
   firstNameControl = new FormControl('', [ Validators.required ]);
   lastNameControl = new FormControl('', [ Validators.required ]);
@@ -29,8 +31,6 @@ export class UserFormInfoComponent implements OnInit {
     
   }
 
-  ngOnChanges(): void {}
-
   ngOnInit(): void {
     this.userInfo.addControl('firstName', this.firstNameControl);
     this.userInfo.addControl('lastName', this.lastNameControl);
@@ -38,9 +38,31 @@ export class UserFormInfoComponent implements OnInit {
     this.userInfo.addControl('age', this.ageControl);
     this.userInfo.addControl('email', this.emailControl);
 
-    if(this.activeUser) {
-      this.userInfo.setValue(this.activeUser);
-    }
+    this.subs.add(
+      this.lastName.valueChanges.pipe(
+        mergeWith(
+          this.firstName.valueChanges,
+          this.firstName.statusChanges,
+          this.lastName.statusChanges,
+          )
+      )
+      .subscribe( () => {
+        this.email.setValue(
+          `${
+            ( this.firstName.value + this.lastName.value ).toLowerCase()
+          }@gmail.com`
+          );
+      }),
+    );
+    this.emitInitEvent();
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
+  emitInitEvent() {
+    this.isFormInit.emit(true);
   }
 
   get firstName(): FormControl { return this.userInfo.get('firstName') as FormControl };

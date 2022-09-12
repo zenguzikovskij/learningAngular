@@ -4,6 +4,7 @@
     [cardType]="cardType" 
     *ngFor="let user of users" 
     [favourite]="favouriteList?.includes(user) || false" 
-    [user]="user" (favouriteChange)="furtherProcessFavourite($event)">
+    [user]="user" 
+    (favouriteChange)="furtherProcessFavourite($event)">
 </app-user-card>
 </div>

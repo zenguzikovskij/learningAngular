@@ -1,11 +1,22 @@
 
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
 
-        <app-user-form-info [userInfo]="userInfo" [activeUser]="activeUser?.info"></app-user-form-info>
+        <app-user-form-info 
+                [userInfo]="userInfo"
+                (isFormInit)="setInitState(0, $event)"
+        ></app-user-form-info>
         
-        <app-user-form-work [userWork]="userWork" [activeUser]="activeUser?.work"></app-user-form-work>
+        <app-user-form-work 
+                [userWork]="userWork"
+                (isFormInit)="setInitState(1, $event)" 
+        ></app-user-form-work>
         
-        <app-user-form-address-list [parentGroup]="userGroup" [addresses]="addresses" [activeUser]="activeUser?.addr"></app-user-form-address-list>
+        <app-user-form-address-list 
+                [parentGroup]="userGroup" 
+                [addresses]="addresses"
+                [numberOfAddresses]="activeUser?.addressArray?.length"
+                (isFormInit)="setInitState(2, $event)" 
+        ></app-user-form-address-list>
 
 
         <button mat-raised-button type="submit">Submit</button>

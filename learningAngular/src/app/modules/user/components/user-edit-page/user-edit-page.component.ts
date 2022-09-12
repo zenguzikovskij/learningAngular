@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { first, Subscription } from 'rxjs';
 import { objectAny } from 'src/app/shared/interfaces/objectAny.interface';
 import { User } from '../../interfaces/user.interface';
@@ -11,7 +11,7 @@ import { UsersDataService } from '../../services/users-data.service';
 interface segmentedUser {
   info: UserInfo,
   work: UserWork, 
-  addr: UserAddress[]
+  addressArray: UserAddress[]
 }
 
 @Component({
@@ -44,7 +44,11 @@ export class UserEditPageComponent implements OnInit, OnDestroy {
         this.usersDataService.getUserById(this.userId)
           .pipe( first() )
           .subscribe( user => {
-            user ? this.userObject = this.separateUserLogic(user) : console.log('Failed to load user');
+            if (user) {
+              this.userObject = this.separateUserLogic(user);
+            } else {
+              console.log('Failed to load user');
+            }
             console.log(this.userObject);
 
             this.isLoaded = true;
@@ -55,6 +59,15 @@ export class UserEditPageComponent implements OnInit, OnDestroy {
   
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+  }
+
+  canEscape(): boolean {
+    let message = 'You have some unsaved changes.\nDo you want to leave the page?'
+    if (confirm(message)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   sendUpdatedUser(newUserObj: User) {
@@ -79,7 +92,7 @@ export class UserEditPageComponent implements OnInit, OnDestroy {
     let addr: UserAddress;
     serverUser['address'] ? addr = serverUser['address'] : addr = { "address-line": '' };
 
-    return { info, work, addr: [addr] };
+    return { info, work, addressArray: [addr] };
   }
 
 }

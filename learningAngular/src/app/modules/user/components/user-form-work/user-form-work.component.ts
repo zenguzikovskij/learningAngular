@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserWork } from '../../interfaces/userWork.interface';
 
@@ -9,7 +9,7 @@ import { UserWork } from '../../interfaces/userWork.interface';
 })
 export class UserFormWorkComponent implements OnInit {
   @Input() userWork: FormGroup;
-  @Input() activeUser?: UserWork;
+  @Output() isFormInit = new EventEmitter<boolean>(false);
 
   companyControl = new FormControl('', [ Validators.maxLength(35) ]);
   departmentControl = new FormControl('', [ Validators.minLength(6) ]);
@@ -20,10 +20,7 @@ export class UserFormWorkComponent implements OnInit {
   ngOnInit(): void {
     this.userWork.addControl('company', this.companyControl);
     this.userWork.addControl('department', this.departmentControl);
-
-    if(this.activeUser) {
-      this.userWork.setValue(this.activeUser);
-    }
+    this.isFormInit.emit(true);
   }
 
   get company() { return this.userWork.get('company') as FormControl };

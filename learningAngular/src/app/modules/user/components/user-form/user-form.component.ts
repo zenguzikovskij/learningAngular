@@ -1,9 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '../../interfaces/user.interface';
 import { UserAddress } from '../../interfaces/userAddress.interface';
 import { UserInfo } from '../../interfaces/userInfo.interface';
 import { UserWork } from '../../interfaces/userWork.interface';
+
+interface segmentedUser {
+  info: UserInfo,
+  work: UserWork, 
+  addressArray: UserAddress[]
+}
 
 @Component({
   selector: 'app-user-form',
@@ -12,12 +18,13 @@ import { UserWork } from '../../interfaces/userWork.interface';
 })
 
 export class UserFormComponent implements OnInit {
-  @Input() activeUser?: { info: UserInfo, work: UserWork, addr: UserAddress[]};
+  @Input() activeUser?: segmentedUser;
   @Output() formSubmitChange = new EventEmitter<User>();
 
   userForm!: FormGroup;
+  childStates: Array <boolean> = [];
 
-  constructor( private formBuilder: FormBuilder ) {
+  constructor( private formBuilder: FormBuilder, private readonly changeDetectorRef: ChangeDetectorRef ) {
     this.initForm();
   }
 
@@ -39,6 +46,37 @@ export class UserFormComponent implements OnInit {
     });
   }
 
+  //todo: change to map => (key: componentName, value: boolean)
+  setInitState(index: number, state: boolean): void {
+    this.childStates[index] = state;
+    this.checkInitStates();
+  }
+
+  private checkInitStates(): void {
+    let indexes = [0, 1, 2];
+    let reducedStates = indexes.reduce( 
+      (prev: boolean, cur: number) => 
+        prev && this.childStates[cur],
+      true);
+      if(reducedStates){
+        this.assignActiveUser();
+      }
+  }
+
+  private assignActiveUser(): void {
+    console.log('Child states are ', this.childStates);
+    console.log("Active user's structure is ", this.activeUser);
+    console.log("Form's structure is ", this.userGroup.value);
+    if(this.activeUser){
+      this.userGroup.patchValue(this.activeUser);
+      // this.userGroup.setValue(this.activeUser);
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
+  consoleOutput(bool: any) {
+    console.log(bool);
+  }
 
   onSubmit(): void {
     if(this.userForm.valid) {

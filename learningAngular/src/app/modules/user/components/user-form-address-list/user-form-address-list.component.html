@@ -11,7 +11,7 @@
             *ngFor="let address of addresses.controls; let i=index" 
             [addressFormControl]="address" 
             [index]="i"
-            [activeUser]="activeUser"
+            (isFormInit)="setInitState(i, $event)"
         >
             <ng-container *ngIf="addresses.length > 1" removeButton>
                 <button mat-mini-fab color="grey" type="button" (click)="removeAddress(i)">
