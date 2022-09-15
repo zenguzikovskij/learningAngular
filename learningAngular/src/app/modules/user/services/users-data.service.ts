@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
+
 import { Observable, of } from 'rxjs';
-import { delay, switchMap } from 'rxjs/operators';
+import { delay, switchMap, first, last, filter } from 'rxjs/operators';
+import { PaginatorData } from 'src/app/shared/interfaces/paginatorData.interface';
+
+import { ConfigService } from '../../core/config/config.service';
 
 import { User } from '../interfaces/user.interface';
 
@@ -9,24 +13,23 @@ import { User } from '../interfaces/user.interface';
 })
 export class UsersDataService {
   users: User[] = [
-    { id: 1, firstName: 'Joe', lastName: 'Joes', email: 'joe@gmail.com',  age: 23, gender: true, department: 'sales', company: 'CMP', imageUrl: '' },
-    { id: 2, firstName: 'Hloe', lastName: 'Hloes', email: 'hloe@gmail.com', age: 35, gender: false, department: 'sales', company: 'CMP', imageUrl:   '' },
-    { id: 3, firstName: 'Jim', lastName: 'Jims', email: 'hloe@gmail.com', age: 98, gender: false, department: 'manager', company: 'CMP', imageUrl:  '' },
-    { id: 4, firstName: 'Nick', lastName: 'Nicks', email: 'hloe@gmail.com', age: 12, gender: false, department: 'sales', company: 'CMP', imageUrl:   '' },
-    { id: 5, firstName: 'Helen', lastName: 'Helens', email: 'hloe@gmail.com', age: 31, gender: false, department: 'sales', company: 'CMP', imageUrl:  '' },
-    { id: 6, firstName: 'Rick', lastName: 'Ricks', email: 'hloe@gmail.com', age: 25, gender: true, department: 'manager', company: 'CMP', imageUrl:  '' },
-    { id: 7, firstName: 'John', lastName: 'Johns', email: 'hloe@gmail.com', age: 62, gender: false, department: 'sales', company: 'CMP', imageUrl:   '' },
-    { id: 8, firstName: 'Amber', lastName: 'Ambers', email: 'hloe@gmail.com', age: 15, gender: true, department: 'sales', company: 'CMP', imageUrl:   '' },
-    { id: 9, firstName: 'Hue', lastName: 'Hues', email: 'hloe@gmail.com', age: 23, gender: true, department: 'BI', company: 'CMP', imageUrl:        '' },
-    { id: 10, firstName: 'Alfred', lastName: 'Alfreds', email: 'hloe@gmail.com', age: 90, gender: true, department: 'sales', company: 'CMP', imageUrl: '' },
-    { id: 11, firstName: 'Joe', lastName: 'Joes', email: 'hloe@gmail.com', age: 64, gender: false, department: 'sales', company: 'CMP', imageUrl:   '' },
-    { id: 12, firstName: 'Joe', lastName: 'Joes', email: 'hloe1@gmail.com', age: 34, gender: false, department: 'sales', company: 'CMP', imageUrl:   '' },
-    { id: 13, firstName: 'Joe', lastName: 'Joes', email: 'hloe2@gmail.com', age: 73, gender: false, department: 'BI', company: 'CMP', imageUrl:      '' },
-    { id: 14, firstName: 'Joe', lastName: 'Joes', email: 'hloe3@gmail.com', age: 26, gender: true, department: 'sales', company: 'CMP', imageUrl:    '' },
-    { id: 15, firstName: 'Joe', lastName: 'Joes', email: 'hloe4@gmail.com', age: 94, gender: true, department: 'sales', company: 'CMP', imageUrl:    '' }
+    { 
+      id: 1, 
+      firstName: 'Joe', 
+      lastName: 'Joes', 
+      email: 'joe@gmail.com',  
+      age: 23, 
+      gender: true, 
+      department: 'sales', 
+      company: 'CMP', 
+      imageUrl: '' 
+    }
   ];
+  hasData: boolean = false;
   
-  constructor() { }
+  constructor( private config: ConfigService ) { 
+    this.downloadRandomUsers();
+  }
   
   private getUserFullName( firstName: string, lastName: string ) {
     return firstName.concat(' ', lastName).toLowerCase();
@@ -37,22 +40,116 @@ export class UsersDataService {
     return this.getUserFullName(user.firstName, user.lastName).match( RegExp(`.*${searchQuery.toLowerCase()}.*`) );
   }
 
-  getUsersObs(searchCriteria: string): Observable<User[]> {
-    console.log(searchCriteria);
-    return of(searchCriteria).pipe(
-      switchMap(this.getUsers.bind(this))
-      );
+  private downloadRandomUsers(): void {
+    let httpObs: Observable<ArrayBuffer>;
+    let response: { [key: string]: any };
+    let params = {
+      'per_page': ['20'],
+      'q': ['a'],
+    };
+    httpObs = this.config.getData('https://api.github.com/search/users', params );
+    httpObs
+    .pipe(
+      first()
+    )
+    .subscribe( resp => {
+      response = resp;
+      this.processServerData(response['items']);
+    });
   }
 
-  getUsers(querySearch: string) {
+  processServerData(rawUsers: Array< { [key: string]: any } >): void {
+    rawUsers.forEach( userToProcess => {
+      let obs = this.processUserInstance(userToProcess['url']);
+      obs.subscribe( rawUser => {
+        let user: User
+        user = this.restructureRawUser(rawUser, userToProcess['id']);
+        this.users.push(user);
+        this.hasData = true;
+      });
+    });
+  }
+
+  private processUserInstance(url: string): Observable <ArrayBuffer> {
+    let httpObs = this.config.getData(url);
+    return httpObs;
+  }
+
+  private restructureRawUser(rawUser: {[key: string]: any}, index: number): User {
+    let firstName = rawUser['name'].split(' ')[0];
+    let lastName = rawUser['name'].split(' ')[1];
+    let age = rawUser['followers'] % 100;
+    let gender = Math.random() % 10 > 5 ? true : false;
+    let email = firstName + lastName + '@gmail.com';
+
+    const newUser: User = {
+      id: index,
+      firstName: firstName,
+      lastName: lastName,
+      age: age,
+      gender: gender,
+      email: email,
+      department: '',
+      company: '',
+      imageUrl: rawUser['avatar_url'],
+      address: [ 
+        {
+          'address-line': rawUser['location'],
+          city: '',
+          zip: ''
+        }
+      ]
+    }
+    return newUser;
+  }
+
+  getUsersObs(searchCriteria: string, pagination?: PaginatorData): Observable<Object> {
+    let params = {
+      search: searchCriteria,
+      pagination: pagination
+    }
+    
+    if (this.hasData) {
+      return of(params)
+        .pipe(
+          switchMap( params => this.getUsers(params.search, params.pagination))
+        );
+    } else {
+      return of([]);
+    }
+    
+  }
+
+  getUsers(querySearch: string, pagination?: PaginatorData): Observable<{}> {
+    let filteredUsers: User[];
+    let response: Object;
+
+    if (pagination) {
+      let begin = pagination.pageIndex * pagination.pageSize;
+      let finish = begin + pagination.pageSize;
+
+      filteredUsers = this.users
+        .filter( user => this.isUserMatching(user, querySearch));
+
+      response = {
+        data: filteredUsers.slice(begin, finish),
+        length: filteredUsers.length
+      }
+    } else {
+      filteredUsers = this.users
+        .filter( user => this.isUserMatching(user, querySearch));
+      response = {
+        data: filteredUsers,
+        length: filteredUsers.length
+      }
+    }
+    
     return of( 
-      this.users.filter( user => this.isUserMatching(user, querySearch))
+      response
     ).pipe(delay(500));
   }
 
   getUserById(id: number): Observable<User | undefined> {
-    console.log(this.users);
-    
     return of(this.users.find( user => user.id === id)).pipe(delay(500));
   }
 
@@ -63,7 +160,6 @@ export class UsersDataService {
     newUser.id = oldLength + 1;
 
     this.users.push(newUser);
-    console.log('Added user', this.users[oldLength]);
     
     return of( true).pipe(delay(500));
   }
@@ -74,16 +170,12 @@ export class UsersDataService {
     
     updatedUser.id = id;
     this.users[oldUserIndex] = updatedUser;
-
-    console.log('generated user is', updatedUser);
-    console.log('user list now is', this.users);
     
     
     return of( this.users[oldUserIndex]).pipe(delay(500));
   }
 
   generateNewUser(obj: {[key: string]: any} ): User {
-    console.log('service got', obj);
     
     let user = obj['user'];
 

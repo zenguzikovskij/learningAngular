@@ -26,15 +26,16 @@ export class UserFormComponent implements OnInit {
 
   constructor( private formBuilder: FormBuilder, private readonly changeDetectorRef: ChangeDetectorRef ) {
     this.initForm();
+    
   }
 
   ngOnInit(): void { 
   }
 
-  get userInfo() { return this.userForm.get(['user', 'info']) as FormGroup; }
-  get userWork() { return this.userForm.get(['user', 'work']) as FormGroup; }
+  get userInfo()  { return this.userForm.get(['user', 'info']) as FormGroup; }
+  get userWork()  { return this.userForm.get(['user', 'work']) as FormGroup; }
   get userGroup() { return this.userForm.get('user') as FormGroup; }
-  get addresses(){ return this.userForm.get(['user', 'addressArray']) as FormArray; }
+  get addresses() { return this.userForm.get(['user', 'addressArray']) as FormArray; }
 
   initForm() {
     this.userForm = this.formBuilder.group({
@@ -68,6 +69,7 @@ export class UserFormComponent implements OnInit {
     console.log("Active user's structure is ", this.activeUser);
     console.log("Form's structure is ", this.userGroup.value);
     if(this.activeUser){
+      // this.activeUser.addressArray = [{"address-line":'home', city: 'city', zip: '12345' }]
       this.userGroup.patchValue(this.activeUser);
       // this.userGroup.setValue(this.activeUser);
       this.changeDetectorRef.detectChanges();
@@ -83,7 +85,7 @@ export class UserFormComponent implements OnInit {
       console.log('attempt to submit form', this.userForm.value);
       let newUser = this.userForm.value;
       this.formSubmitChange.emit(newUser);
-      
+      this.userForm.markAsPristine();
     } else {
       this.userForm.markAllAsTouched();
 

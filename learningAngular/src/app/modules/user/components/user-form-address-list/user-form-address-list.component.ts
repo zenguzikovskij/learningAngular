@@ -16,6 +16,8 @@ export class UserFormAddressListComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,  private readonly changeDetectorRef: ChangeDetectorRef ) { 
     this.childStates = new Array(this.numberOfAddresses);
+    console.log('Number is  ', this.numberOfAddresses);
+    
     if(this.numberOfAddresses){
       this.childStates.forEach( state => this.addAddress() );
     }
@@ -37,7 +39,8 @@ export class UserFormAddressListComponent implements OnInit {
         prev && cur,
       true);
     if (this.numberOfAddresses) {
-      this.addresses.enable();
+      // this.addresses.enable();
+      this.changeDetectorRef.detectChanges();
     }
 
     if (reducedStates) {
@@ -47,7 +50,6 @@ export class UserFormAddressListComponent implements OnInit {
   
   addAddress(): void {
     this.addresses.push(this.formBuilder.group({}));
-    this.changeDetectorRef.detectChanges();
   }
 
   removeAddress(addressIndex: number) {

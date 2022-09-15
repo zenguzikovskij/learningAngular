@@ -1,5 +1,3 @@
-import { Component } from "@angular/core";
-
-export interface GuardedComponent extends Component {
-    canEscape(): boolean;
+export interface GuardedComponent {
+    canEscape(): { value: string, msg: string };
 }

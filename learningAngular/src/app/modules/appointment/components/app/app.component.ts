@@ -9,8 +9,8 @@ export class AppComponent {
   title = 'learningAngular';
   
   pages = [
-    { number: 1, destination: 'Car', address: '/cars'},
-    { number: 2, destination: 'User', address: '/users' },
+    { number: 1, destination: 'Cars', address: '/cars'},
+    { number: 2, destination: 'Users', address: '/users' },
     { number: 3, destination: 'Registration', address: '/users/user-registration' }
   ];
 }

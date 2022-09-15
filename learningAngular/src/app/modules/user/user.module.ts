@@ -12,13 +12,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { UserCardComponent } from './components/user-card/user-card.component';
-import { UsersDataService } from './services/users-data.service';
 import { UserListComponent } from './components/user-list/user-list.component';
 
 import { SharedModule } from 'src/app/shared/shared.module';
-import { FavouritesService } from '../../shared/services/favourites.service';
 import { UserRoutingModule } from './user-routing.module';
 import { UserRegistrationPageComponent } from './components/user-registration-page/user-registration-page.component';
 import { UserListPageComponent } from './components/user-list-page/user-list-page.component';
@@ -57,13 +56,10 @@ import { UserFormAddressListComponent } from './components/user-form-address-lis
     MatSelectModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
 
     SharedModule,
     UserRoutingModule,
-  ],
-  providers: [
-    UsersDataService,
-    FavouritesService
   ]
 })
 export class UserModule { }

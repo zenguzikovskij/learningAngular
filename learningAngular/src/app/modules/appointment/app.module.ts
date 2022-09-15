@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { UserModule } from '../user/user.module';
 import { CarModule } from '../car/car.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CarModule } from '../car/car.module';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
     MatButtonModule,

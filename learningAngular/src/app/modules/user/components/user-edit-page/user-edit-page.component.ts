@@ -1,13 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, Subscription } from 'rxjs';
 import { objectAny } from 'src/app/shared/interfaces/objectAny.interface';
+import { RouteGuardObject } from 'src/app/shared/interfaces/routeGuardObject.interface';
 import { User } from '../../interfaces/user.interface';
 import { UserAddress } from '../../interfaces/userAddress.interface';
 import { UserInfo } from '../../interfaces/userInfo.interface';
 import { UserWork } from '../../interfaces/userWork.interface';
 import { UsersDataService } from '../../services/users-data.service';
-
+import { UserFormComponent } from '../user-form/user-form.component';
+ 
 interface segmentedUser {
   info: UserInfo,
   work: UserWork, 
@@ -21,6 +23,7 @@ interface segmentedUser {
 })
 
 export class UserEditPageComponent implements OnInit, OnDestroy {
+  @ViewChild(UserFormComponent) userForm: UserFormComponent; 
   isLoaded: boolean = false;
 
   userId: number;
@@ -61,12 +64,19 @@ export class UserEditPageComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  canEscape(): boolean {
-    let message = 'You have some unsaved changes.\nDo you want to leave the page?'
-    if (confirm(message)) {
-      return true;
+  canEscape(): RouteGuardObject {
+    if( this.userForm.userForm.dirty ) {
+      console.log('returning is dirty');
+      return {
+        value: true, 
+        msg: 'You have some unsaved changes.\nDo you really want to leave?'
+      };
     } else {
-      return false;
+      console.log('returning is not dirty');
+      return {
+        value: false,
+        msg: ''
+      };
     }
   }
 
@@ -89,10 +99,19 @@ export class UserEditPageComponent implements OnInit, OnDestroy {
       'company': serverUser['company']
     };
 
-    let addr: UserAddress;
-    serverUser['address'] ? addr = serverUser['address'] : addr = { "address-line": '' };
+    let addr: UserAddress[];
+    if(!serverUser['address']) {
+      addr = [ { "address-line": '', city: '', zip: '' } ];
+    } else {
+      addr = serverUser['address'].map( (singleAddr: UserAddress) => {
+        return {
+          'address-line': singleAddr['address-line'] ? singleAddr['address-line'] : '', 
+          city: singleAddr.city ? singleAddr.city : '', 
+          zip: singleAddr.zip ? singleAddr.zip : ''}
+      });
+    }
 
-    return { info, work, addressArray: [addr] };
+    return { info, work, addressArray: addr };
   }
 
 }
